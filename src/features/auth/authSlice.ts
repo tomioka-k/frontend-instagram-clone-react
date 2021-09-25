@@ -1,18 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
-import { PROPS_AUTHEN, PROPS_PROFILE, NICK_NAME } from "../types";
+import {
+	PROPS_AUTHEN,
+	PROPS_PROFILE,
+	PROPS_NICKNAME,
+	JWT_TOKEN,
+} from "../types";
 
 const apiUrl = process.env.REACT_APP_DEV_API_URL;
 
 export const fetchAsyncLogin = createAsyncThunk(
 	"auth/post",
 	async (authen: PROPS_AUTHEN) => {
-		const res = await axios.post(`${apiUrl}authen/jwt/create/`, authen, {
-			headers: {
-				"Content-Type": "Application/json",
-			},
-		});
+		const res = await axios.post<JWT_TOKEN>(
+			`${apiUrl}authen/jwt/create/`,
+			authen,
+			{
+				headers: {
+					"Content-Type": "Application/json",
+				},
+			}
+		);
 		return res.data;
 	}
 );
@@ -29,9 +38,9 @@ export const fetchAsyncRegister = createAsyncThunk(
 	}
 );
 
-export const fetchAsyncCreateProfile = createAsyncThunk(
+export const fetchAsyncCreateProf = createAsyncThunk(
 	"profile/post",
-	async (nickName: PROPS_PROFILE) => {
+	async (nickName: PROPS_NICKNAME) => {
 		const res = await axios.post(`${apiUrl}api/profile`, nickName, {
 			headers: {
 				"Content-Type": "Application/json",
@@ -73,6 +82,15 @@ export const fetchAsyncGetMyProf = createAsyncThunk(
 		return res.data[0];
 	}
 );
+
+export const fetchAsyncGetProfs = createAsyncThunk("profiles/get", async () => {
+	const res = await axios.get(`${apiUrl}api/profile/`, {
+		headers: {
+			Authorization: `JWT ${localStorage.localJWT}`,
+		},
+	});
+	return res.data;
+});
 
 const initialState = {
 	openSignIn: true,
@@ -129,6 +147,26 @@ export const authSlice = createSlice({
 			state.myprofile.nickName = action.payload;
 		},
 	},
+	extraReducers: (builder) => {
+		builder.addCase(fetchAsyncLogin.fulfilled, (state, action) => {
+			localStorage.setItem("localJWT", action.payload.access);
+		});
+		builder.addCase(fetchAsyncCreateProf.fulfilled, (state, action) => {
+			state.myprofile = action.payload;
+		});
+		builder.addCase(fetchAsyncGetMyProf.fulfilled, (state, action) => {
+			state.myprofile = action.payload;
+		});
+		builder.addCase(fetchAsyncGetProfs.fulfilled, (state, action) => {
+			state.profiles = action.payload;
+		});
+		builder.addCase(fetchAsyncUpdateProf.fulfilled, (state, action) => {
+			state.myprofile = action.payload;
+			state.profiles = state.profiles.map((prof) =>
+				prof.id === action.payload.id ? action.payload : prof
+			);
+		});
+	},
 });
 
 export const {
@@ -143,6 +181,12 @@ export const {
 	editNickname,
 } = authSlice.actions;
 
-export const selectAuth = (state: RootState) => state.counter.value;
+export const selectIsLoadingAuth = (state: RootState) =>
+	state.auth.isLoadingAuth;
+export const selectOpenSignIn = (state: RootState) => state.auth.openSignIn;
+export const selectOpenSignUp = (state: RootState) => state.auth.openSignUp;
+export const selectOpenProfile = (state: RootState) => state.auth.openProfile;
+export const selectProfile = (state: RootState) => state.auth.myprofile;
+export const selectProfiles = (state: RootState) => state.auth.profiles;
 
 export default authSlice.reducer;
