@@ -15,6 +15,11 @@ export interface PROPS_PROFILE {
 	img: File | null;
 }
 
-export interface NICK_NAME {
+export interface PROPS_NICKNAME {
 	nickName: string;
+}
+
+export interface JWT_TOKEN {
+	access: string;
+	refresh: string;
 }
