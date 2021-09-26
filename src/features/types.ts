@@ -6,7 +6,7 @@ export interface File extends Blob {
 // authSlice.ts
 export interface PROPS_AUTHEN {
 	email: string;
-	passowrd: string;
+	password: string;
 }
 
 export interface PROPS_PROFILE {

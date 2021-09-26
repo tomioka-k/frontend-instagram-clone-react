@@ -131,7 +131,7 @@ export const authSlice = createSlice({
 		resetOpenSignIn(state) {
 			state.openSignIn = false;
 		},
-		setOpenSignUP(state) {
+		setOpenSignUp(state) {
 			state.openSignUp = true;
 		},
 		resetOpenSignUp(state) {
@@ -174,7 +174,7 @@ export const {
 	fetchCredEnd,
 	setOpenSignIn,
 	resetOpenSignIn,
-	setOpenSignUP,
+	setOpenSignUp,
 	resetOpenSignUp,
 	setOpenProfile,
 	resetOpenProfile,
