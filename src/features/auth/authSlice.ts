@@ -1,27 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
-import {
-	PROPS_AUTHEN,
-	PROPS_PROFILE,
-	PROPS_NICKNAME,
-	JWT_TOKEN,
-} from "../types";
+import { PROPS_AUTHEN, PROPS_PROFILE, PROPS_NICKNAME } from "../types";
 
 const apiUrl = process.env.REACT_APP_DEV_API_URL;
 
 export const fetchAsyncLogin = createAsyncThunk(
 	"auth/post",
 	async (authen: PROPS_AUTHEN) => {
-		const res = await axios.post<JWT_TOKEN>(
-			`${apiUrl}authen/jwt/create/`,
-			authen,
-			{
-				headers: {
-					"Content-Type": "Application/json",
-				},
-			}
-		);
+		const res = await axios.post(`${apiUrl}authen/jwt/create/`, authen, {
+			headers: {
+				"Content-Type": "Application/json",
+			},
+		});
 		return res.data;
 	}
 );

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
-import { PROPS_NEWPOST, PROPS_LIKES, PROPS_COMMENT } from "../types";
+import { PROPS_NEWPOST, PROPS_LIKED, PROPS_COMMENT } from "../types";
 
 const apiUrlPost = `${process.env.REACT_APP_DEV_API_URL}api/post/`;
 const apiUrlComment = `${process.env.REACT_APP_DEV_API_URL}api/comment/`;
@@ -32,7 +32,7 @@ export const fetchAsyncNewPost = createAsyncThunk(
 
 export const fetchAsyncPatchLiked = createAsyncThunk(
 	"post/patch",
-	async (liked: PROPS_LIKES) => {
+	async (liked: PROPS_LIKED) => {
 		const currentLiked = liked.current;
 		const uploadData = new FormData();
 

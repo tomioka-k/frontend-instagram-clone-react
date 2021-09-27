@@ -1,9 +1,8 @@
 export interface File extends Blob {
-	readonly lastMOdified: number;
+	readonly lastModified: number;
 	readonly name: string;
 }
-
-// authSlice.ts
+/*authSlice.ts*/
 export interface PROPS_AUTHEN {
 	email: string;
 	password: string;
@@ -19,29 +18,22 @@ export interface PROPS_NICKNAME {
 	nickName: string;
 }
 
-export interface JWT_TOKEN {
-	access: string;
-	refresh: string;
-}
-
-// postSlice.ts
+/*postSlice.ts*/
 export interface PROPS_NEWPOST {
 	title: string;
 	img: File | null;
 }
-
-export interface PROPS_LIKES {
+export interface PROPS_LIKED {
 	id: number;
 	title: string;
 	current: number[];
 	new: number;
 }
-
 export interface PROPS_COMMENT {
 	text: string;
 	post: number;
 }
-
+/*Post.tsx*/
 export interface PROPS_POST {
 	postId: number;
 	loginId: number;
