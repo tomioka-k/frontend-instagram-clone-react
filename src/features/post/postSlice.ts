@@ -142,6 +142,12 @@ export const postSlice = createSlice({
 				posts: [...state.posts, action.payload],
 			};
 		});
+		builder.addCase(fetchAsyncGetComments.fulfilled, (state, action) => {
+			return {
+				...state,
+				comments: action.payload,
+			};
+		});
 		builder.addCase(fetchAsyncPostComment.fulfilled, (state, action) => {
 			return {
 				...state,

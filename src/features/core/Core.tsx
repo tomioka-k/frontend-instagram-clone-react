@@ -37,6 +37,7 @@ import {
 	fetchAsyncGetComments,
 	selectOpenNewPost,
 } from "../post/postSlice";
+import Post from "../post/Post";
 
 const StyledBadge = withStyles((theme) => ({
 	badge: {
@@ -161,6 +162,27 @@ const Core: React.FC = () => {
 					</div>
 				)}
 			</div>
+			{profile?.nickName && (
+				<>
+					<Grid container spacing={4}>
+						{posts
+							.slice(0)
+							.reverse()
+							.map((post) => (
+								<Grid key={post.id} item xs={12} md={4}>
+									<Post
+										postId={post.id}
+										title={post.title}
+										loginId={profile.userProfile}
+										userPost={post.userPost}
+										imageUrl={post.img}
+										liked={post.liked}
+									/>
+								</Grid>
+							))}
+					</Grid>
+				</>
+			)}
 		</div>
 	);
 };
